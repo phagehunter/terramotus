@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TERRA MOTUS // MONTHLY ARCHIVE</title>
+  <title>TERRA MOTUS // GLOBAL LEDGER</title>
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200;0,400;1,200&family=Inter:wght@300;400&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -38,12 +38,36 @@
     .prefix { font-size: 0.6rem; letter-spacing: 0.8em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.8rem; }
     h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 200; letter-spacing: 0.4em; color: var(--bone); text-transform: uppercase; }
     
-    /* Search Bar Aesthetic */
-    .search-container {
+    .controls-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
       margin: 1.5rem auto 0;
-      width: 300px;
-      position: relative;
+      width: 95%;
+      max-width: 600px;
     }
+
+    .home-button {
+      padding: 0.6rem 1.2rem;
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 0.65rem;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: all 0.4s ease;
+      white-space: nowrap;
+    }
+
+    .home-button:hover {
+      border-color: var(--gold);
+      background: rgba(197, 160, 89, 0.05);
+      color: var(--bone);
+    }
+
+    .search-wrap { flex-grow: 1; max-width: 300px; }
 
     #ledgerSearch {
       width: 100%;
@@ -53,47 +77,48 @@
       color: var(--bone);
       font-family: 'Inter', sans-serif;
       font-size: 0.7rem;
-      padding: 8px;
+      padding: 8px 0;
       text-align: center;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       transition: all 0.4s ease;
     }
 
-    #ledgerSearch:focus {
-      outline: none;
-      border-bottom: 1px solid var(--gold);
-      width: 400px;
-      background: rgba(197, 160, 89, 0.05);
-    }
+    #ledgerSearch:focus { outline: none; border-bottom: 1px solid var(--gold); background: rgba(197, 160, 89, 0.05); }
 
-    #status { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--slate); margin-top: 1rem; text-transform: uppercase; }
+    #status { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--slate); margin-top: 1.2rem; text-transform: uppercase; }
 
-    .ledger-wrapper { width: 90%; max-width: 1100px; margin: 0 auto; flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .ledger-wrapper { width: 95%; max-width: 1100px; margin: 0 auto; flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
     .ledger-header { width: 100%; border-collapse: collapse; table-layout: fixed; border-bottom: 1px solid rgba(197, 160, 89, 0.4); }
     .ledger-body-container { width: 100%; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--gold) transparent; mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent 100%); }
     .ledger-body-container::-webkit-scrollbar { width: 3px; }
     .ledger-body-container::-webkit-scrollbar-thumb { background: var(--gold); }
     .ledger-body { width: 100%; border-collapse: collapse; table-layout: fixed; }
 
-    th { font-family: 'Inter', sans-serif; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.3em; color: var(--gold); padding: 15px; text-align: left; }
+    th { font-family: 'Inter', sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--gold); padding: 15px 10px; text-align: left; }
     tr { transition: all 0.3s ease; cursor: pointer; border-bottom: 1px solid rgba(226, 232, 240, 0.05); }
-    tr.hidden { display: none; }
-    tr:hover { background: rgba(197, 160, 89, 0.08); }
-    td { padding: 18px 15px; font-size: 0.9rem; font-weight: 200; vertical-align: middle; }
+    td { padding: 18px 10px; font-size: 0.85rem; font-weight: 200; vertical-align: middle; }
 
-    .col-date { width: 15%; font-family: 'Inter', sans-serif; font-size: 0.7rem; color: var(--slate); }
-    .col-cat { width: 18%; font-family: 'Inter', sans-serif; font-size: 0.65rem; color: var(--gold); letter-spacing: 0.1em; }
-    .col-title { width: 42%; color: var(--bone); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .col-coords { width: 25%; font-family: 'Inter', sans-serif; font-size: 0.7rem; color: var(--slate); text-align: right; }
+    /* Explicit Tabular Columns */
+    .col-date { width: 18%; font-family: 'Inter', sans-serif; font-size: 0.7rem; color: var(--slate); }
+    .col-cat { width: 18%; font-family: 'Inter', sans-serif; font-size: 0.65rem; color: var(--gold); letter-spacing: 0.05em; }
+    .col-title { width: 44%; color: var(--bone); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .col-coords { width: 20%; font-family: 'Inter', sans-serif; font-size: 0.65rem; color: var(--slate); text-align: right; }
 
-    footer { width: 100%; text-align: center; padding: 20px 0; flex-shrink: 0; }
-    .footer-tags { font-size: 0.55rem; letter-spacing: 0.5em; color: var(--gold); opacity: 0.5; text-transform: uppercase; }
+    footer { width: 100%; text-align: center; padding: 15px 0; flex-shrink: 0; }
+    .footer-tags { font-size: 0.5rem; letter-spacing: 0.4em; color: var(--gold); opacity: 0.4; text-transform: uppercase; }
 
-    @keyframes rowIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 768px) {
+      .col-date { width: 25%; }
+      .col-cat { width: 25%; }
+      .col-title { width: 50%; white-space: normal; overflow: visible; font-size: 0.8rem; }
+      .col-coords { display: none; }
+    }
+
+    @keyframes rowIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .row-animate { animation: rowIn 0.5s ease forwards; }
     header { animation: blurFadeIn 2s ease forwards; }
-    @keyframes blurFadeIn { 0% { opacity: 0; filter: blur(10px); transform: translateY(5px); } 100% { opacity: 1; filter: blur(0px); transform: translateY(0); } }
+    @keyframes blurFadeIn { 0% { opacity: 0; filter: blur(10px); } 100% { opacity: 1; filter: blur(0px); } }
   </style>
 </head>
 <body>
@@ -102,10 +127,15 @@
     <header>
       <div class="prefix">Terra Motus</div>
       <h1>Planet Tracker</h1>
-      <div class="search-container">
-        <input type="text" id="ledgerSearch" placeholder="Search Records...">
+      
+      <div class="controls-container">
+        <a href="https://phagehunter.github.io/" class="home-button">← Home</a>
+        <div class="search-wrap">
+          <input type="text" id="ledgerSearch" placeholder="Search Records...">
+        </div>
       </div>
-      <div id="status">Syncing 30-Day Global Ledger...</div>
+
+      <div id="status">Scanning Planetary Records...</div>
     </header>
   </div>
 
@@ -125,10 +155,10 @@
         <tbody id="ledgerBody"></tbody>
       </table>
     </div>
-  </div>
-    
+  </div>      
+
   <footer>
-    <div class="footer-tags">Monthly Catalog // V.3 NASA EONET</div>
+    <div class="footer-tags">Full Spectrum Archive // Monthly Scan // V.3 NASA EONET</div>
   </footer>
 
   <script>
@@ -136,18 +166,11 @@
 
     async function fetchMonthlyEvents() {
       const status = document.getElementById('status');
-      const tbody = document.getElementById('ledgerBody');
       const now = new Date();
       const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
-
-      const categories = [
-        'drought', 'dustHaze', 'earthquakes', 'floods', 
-        'landslides', 'manmade', 'seaLakeIce', 'severeStorms', 
-        'snow', 'tempExtremes', 'volcanoes', 'waterColor', 'wildfires'
-      ];
+      const categories = ['drought', 'dustHaze', 'earthquakes', 'floods', 'landslides', 'manmade', 'seaLakeIce', 'severeStorms', 'snow', 'tempExtremes', 'volcanoes', 'waterColor', 'wildfires'];
 
       try {
-        // Fetch more items per category to cover a full month
         const promises = categories.map(cat => 
           fetch(`https://eonet.gsfc.nasa.gov/api/v3/categories/${cat}?status=all&limit=50`)
             .then(res => res.json())
@@ -156,24 +179,20 @@
         const results = await Promise.all(promises);
         let allEvents = results.flatMap(result => result.events || []);
 
-        // Strict 30-day filter and deduplication by ID
         const seen = new Set();
         masterEvents = allEvents.filter(event => {
           const eventDate = new Date(event.geometry[0].date);
           const isRecent = eventDate >= thirtyDaysAgo;
           const isNew = !seen.has(event.id);
-          if (isRecent && isNew) {
-            seen.add(event.id);
-            return true;
-          }
+          if (isRecent && isNew) { seen.add(event.id); return true; }
           return false;
         }).sort((a, b) => new Date(b.geometry[0].date) - new Date(a.geometry[0].date));
 
         renderTable(masterEvents);
-        status.innerText = `Archived ${masterEvents.length} Records from the past 30 days`;
+        status.innerText = `Archived ${masterEvents.length} Global Records`;
 
       } catch (err) {
-        status.innerText = "SATELLITE LINK INTERRUPTED";
+        status.innerText = "DATA LINK INTERRUPTED";
       }
     }
 
@@ -184,28 +203,33 @@
       data.forEach((event, index) => {
         const row = document.createElement('tr');
         const dateObj = new Date(event.geometry[0].date);
-        const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+        
+        // Format: APR 30, 2026
+        const options = { month: 'short', day: '2-digit', year: 'numeric' };
+        const formattedDate = dateObj.toLocaleDateString('en-US', options).replace(',', '');
+        const dateParts = formattedDate.split(' ');
+        // Re-ordering to match "MONTH DD, YYYY" with comma back in
+        const finalDate = `${dateParts[0]} ${dateParts[1]}, ${dateParts[2]}`.toUpperCase();
+
         const categoryTitle = event.categories[0].title;
         const [lon, lat] = event.geometry[0].coordinates;
         const sourceUrl = event.sources[0]?.url || event.link;
 
         row.innerHTML = `
-          <td class="col-date">${formattedDate.toUpperCase()}</td>
+          <td class="col-date">${finalDate}</td>
           <td class="col-cat">${categoryTitle.toUpperCase()}</td>
           <td class="col-title">${event.title}</td>
-          <td class="col-coords">${lat.toFixed(3)}° N, ${lon.toFixed(3)}° E</td>
+          <td class="col-coords">${lat.toFixed(3)}°N, ${lon.toFixed(3)}°E</td>
         `;
 
         row.style.opacity = "0";
         row.classList.add('row-animate');
-        row.style.animationDelay = `${Math.min(index * 10, 1000)}ms`;
-
+        row.style.animationDelay = `${Math.min(index * 12, 1000)}ms`;
         row.onclick = () => window.open(sourceUrl, '_blank');
         tbody.appendChild(row);
       });
     }
 
-    // Search Functionality
     document.getElementById('ledgerSearch').addEventListener('input', (e) => {
       const term = e.target.value.toLowerCase();
       const filtered = masterEvents.filter(event => 
