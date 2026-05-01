@@ -158,7 +158,7 @@
   </div>      
 
   <footer>
-    <div class="footer-tags">Full Spectrum Archive // Monthly Scan // V.3 NASA EONET</div>
+    <div class="footer-tags">Terra Motus // Monthly Scan // V.3 NASA EONET</div>
   </footer>
 
   <script>
@@ -189,7 +189,7 @@
         }).sort((a, b) => new Date(b.geometry[0].date) - new Date(a.geometry[0].date));
 
         renderTable(masterEvents);
-        status.innerText = `Archived ${masterEvents.length} Global Records`;
+        status.innerText = `Archived ${masterEvents.length} Global Records Over the Past Month`;
 
       } catch (err) {
         status.innerText = "DATA LINK INTERRUPTED";
