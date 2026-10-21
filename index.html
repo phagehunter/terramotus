@@ -4,6 +4,82 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TERRA MOTUS // GLOBAL LEDGER</title>
+  <meta name="description" content="A live ledger of natural events on Earth over the past 30 days, from NASA EONET: wildfires, storms, volcanoes, floods, earthquakes, sea ice and more.">
+  <meta name="author" content="Curtis Hoffmann">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#000b18">
+  <link rel="canonical" href="https://curtishoffmann.com/terramotus/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Terra Motus">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="TERRA MOTUS // GLOBAL LEDGER">
+  <meta property="og:description" content="A live ledger of natural events on Earth over the past 30 days, from NASA EONET: wildfires, storms, volcanoes, floods, earthquakes, sea ice and more.">
+  <meta property="og:url" content="https://curtishoffmann.com/terramotus/">
+  <meta property="og:image" content="https://curtishoffmann.com/terramotus/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Terra Motus: a live ledger of natural events on Earth from NASA EONET">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TERRA MOTUS // GLOBAL LEDGER">
+  <meta name="twitter:description" content="A live ledger of natural events on Earth over the past 30 days, from NASA EONET: wildfires, storms, volcanoes, floods, earthquakes, sea ice and more.">
+  <meta name="twitter:image" content="https://curtishoffmann.com/terramotus/assets/og-image.png">
+  <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebApplication",
+   "@id": "https://curtishoffmann.com/terramotus/",
+   "url": "https://curtishoffmann.com/terramotus/",
+   "name": "Terra Motus",
+   "alternateName": "Terra Motus Planet Tracker",
+   "headline": "TERRA MOTUS // GLOBAL LEDGER",
+   "description": "A live ledger of natural events on Earth over the past 30 days, from NASA EONET: wildfires, storms, volcanoes, floods, earthquakes, sea ice and more.",
+   "inLanguage": "en",
+   "applicationCategory": "EducationalApplication",
+   "operatingSystem": "Any (web browser)",
+   "isAccessibleForFree": true,
+   "author": {
+    "@type": "Person",
+    "name": "Curtis Hoffmann",
+    "url": "https://curtishoffmann.com/"
+   },
+   "isPartOf": {
+    "@type": "WebSite",
+    "name": "Curtis Hoffmann",
+    "url": "https://curtishoffmann.com/"
+   },
+   "image": "https://curtishoffmann.com/terramotus/assets/og-image.png",
+   "isBasedOn": {
+    "@type": "Dataset",
+    "name": "NASA Earth Observatory Natural Event Tracker (EONET) v3",
+    "url": "https://eonet.gsfc.nasa.gov/",
+    "creator": {
+     "@type": "Organization",
+     "name": "NASA Earth Science Data Systems"
+    }
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Curtis Hoffmann",
+     "item": "https://curtishoffmann.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Terra Motus",
+     "item": "https://curtishoffmann.com/terramotus/"
+    }
+   ]
+  }
+ ]
+}
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200;0,400;1,200&family=Inter:wght@300;400&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -118,6 +194,15 @@
     @keyframes rowIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .row-animate { animation: rowIn 0.5s ease forwards; }
     header { animation: blurFadeIn 2s ease forwards; }
+    /* Pre-rendered introduction: open until the ledger has loaded, then collapsed to one line. */
+    #intro { width: 95%; max-width: 700px; margin: 0 auto 0.8rem; flex-shrink: 0; font-size: 0.92rem; line-height: 1.5; color: var(--bone); }
+    #intro summary { cursor: pointer; list-style: none; font-family: 'Inter', sans-serif; font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); text-align: center; padding: 0.3rem 0; }
+    #intro summary::-webkit-details-marker { display: none; }
+    #intro summary::after { content: ' ▾'; }
+    #intro[open] summary::after { content: ' ▴'; }
+    #intro p { margin: 0.5rem 0; }
+    #intro ul { margin: 0.4rem 0 0.4rem 1.2rem; }
+    #intro a { color: var(--gold); }
     @keyframes blurFadeIn { 0% { opacity: 0; filter: blur(10px); } 100% { opacity: 1; filter: blur(0px); } }
   </style>
 </head>
@@ -129,7 +214,7 @@
       <h1>Planet Tracker</h1>
       
       <div class="controls-container">
-        <a href="https://phagehunter.github.io/" class="home-button">← Home</a>
+        <a href="https://curtishoffmann.com/" class="home-button">← Home</a>
         <div class="search-wrap">
           <input type="text" id="ledgerSearch" placeholder="Search Records...">
         </div>
@@ -138,6 +223,17 @@
       <div id="status">Scanning Planetary Records...</div>
     </header>
   </div>
+
+  <details id="intro" open>
+    <summary>About this ledger</summary>
+    <p>Terra Motus is a live ledger of natural events on Earth, drawn from NASA's Earth Observatory Natural Event Tracker (EONET). Each time the page opens it asks EONET for the latest events in thirteen categories and keeps those observed in the past 30 days, newest first.</p>
+    <p>Each row gives the date of the latest observation, the category, the event's name and its coordinates. Click a row to open the source report for that event, and type in the search box to filter the ledger by name or category.</p>
+    <ul>
+      <li>Categories: wildfires, severe storms, volcanoes, floods, earthquakes, landslides, drought, dust and haze, sea and lake ice, snow, temperature extremes, water color, and manmade events.</li>
+      <li>Source: <a href="https://eonet.gsfc.nasa.gov/">NASA EONET v3</a>, which curates events from NASA and partner agencies. Timing and positions are EONET's.</li>
+      <li>No account, no tracking; the page is a single HTML file by <a href="https://curtishoffmann.com/">Curtis Hoffmann</a>, <a href="https://github.com/phagehunter/terramotus">source on GitHub</a>.</li>
+    </ul>
+  </details>
 
   <div class="ledger-wrapper">
     <table class="ledger-header">
@@ -190,6 +286,7 @@
 
         renderTable(masterEvents);
         status.innerText = `Archived ${masterEvents.length} Global Records Over the Past Month`;
+        document.getElementById('intro').open = false;
 
       } catch (err) {
         status.innerText = "DATA LINK INTERRUPTED";

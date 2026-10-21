@@ -1,0 +1,23 @@
+# Terra Motus
+
+> A single-page live ledger by Curtis Hoffmann of natural events on Earth over the past 30 days, drawn from NASA's Earth Observatory Natural Event Tracker (EONET) v3. The page queries EONET in the browser on every visit; nothing is stored.
+
+Site: https://curtishoffmann.com/terramotus/
+Source: https://github.com/phagehunter/terramotus
+
+## What it shows
+
+- One row per event: date of the latest observation, category, event name, and coordinates. Newest first. Click a row to open the event's source report; the search box filters by name or category.
+- Thirteen EONET categories: drought, dust and haze, earthquakes, floods, landslides, manmade, sea and lake ice, severe storms, snow, temperature extremes, volcanoes, water color, wildfires.
+- Events are kept when their most recent geometry date falls within the past 30 days (up to 50 per category are requested).
+
+## Data
+
+- NASA EONET v3, https://eonet.gsfc.nasa.gov/ (API: https://eonet.gsfc.nasa.gov/api/v3/categories/<category>?status=all&limit=50). EONET curates event metadata from NASA and partner sources; dates, titles and positions are theirs.
+- The page is plain HTML, CSS and JavaScript with no dependencies beyond two Google Fonts.
+
+## Contact
+
+- Author: Curtis Hoffmann, https://curtishoffmann.com/
+- Issues: https://github.com/phagehunter/terramotus/issues
+- Sitemap: https://curtishoffmann.com/terramotus/sitemap.xml
