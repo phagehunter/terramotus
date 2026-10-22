@@ -277,6 +277,7 @@
 
         const seen = new Set();
         masterEvents = allEvents.filter(event => {
+          if (!event.geometry?.length) return false;
           const eventDate = new Date(event.geometry[0].date);
           const isRecent = eventDate >= thirtyDaysAgo;
           const isNew = !seen.has(event.id);
@@ -291,6 +292,19 @@
       } catch (err) {
         status.innerText = "DATA LINK INTERRUPTED";
       }
+    }
+
+    // EONET geometries are Points for most categories but Polygons for floods.
+    // Return [lon, lat]: the point itself, or the centroid of a polygon's outer ring.
+    function pointOf(geometry) {
+      const c = geometry?.coordinates;
+      if (geometry?.type === 'Point' && Array.isArray(c) && c.length >= 2) return [c[0], c[1]];
+      const ring = geometry?.type === 'Polygon' ? c?.[0] : geometry?.type === 'MultiPolygon' ? c?.[0]?.[0] : null;
+      if (Array.isArray(ring) && ring.length) {
+        const pts = ring.filter(p => Array.isArray(p) && p.length >= 2);
+        if (pts.length) return [pts.reduce((a, p) => a + p[0], 0) / pts.length, pts.reduce((a, p) => a + p[1], 0) / pts.length];
+      }
+      return [NaN, NaN];
     }
 
     function renderTable(data) {
@@ -308,15 +322,15 @@
         // Re-ordering to match "MONTH DD, YYYY" with comma back in
         const finalDate = `${dateParts[0]} ${dateParts[1]}, ${dateParts[2]}`.toUpperCase();
 
-        const categoryTitle = event.categories[0].title;
-        const [lon, lat] = event.geometry[0].coordinates;
-        const sourceUrl = event.sources[0]?.url || event.link;
+        const categoryTitle = event.categories?.[0]?.title || 'Uncategorized';
+        const [lon, lat] = pointOf(event.geometry[0]);
+        const sourceUrl = event.sources?.[0]?.url || event.link;
 
         row.innerHTML = `
           <td class="col-date">${finalDate}</td>
           <td class="col-cat">${categoryTitle.toUpperCase()}</td>
           <td class="col-title">${event.title}</td>
-          <td class="col-coords">${lat.toFixed(3)}°N, ${lon.toFixed(3)}°E</td>
+          <td class="col-coords">${Number.isFinite(lat) && Number.isFinite(lon) ? `${lat.toFixed(3)}°N, ${lon.toFixed(3)}°E` : '—'}</td>
         `;
 
         row.style.opacity = "0";
