@@ -1,0 +1,82 @@
+{
+ "source": "NASA Earth Observatory Natural Event Tracker (EONET) v3",
+ "source_url": "https://eonet.gsfc.nasa.gov/",
+ "api_docs": "https://eonet.gsfc.nasa.gov/docs/v3",
+ "endpoint": "https://eonet.gsfc.nasa.gov/api/v3/categories/<category>?status=all&days=30&limit=1000",
+ "snapshot": "2026-10-24T05:18:11Z",
+ "window_days": 30,
+ "window_start": "2026-09-24T05:18:11Z",
+ "events": 723,
+ "observations": 1617,
+ "categories": {
+  "drought": {
+   "title": "Drought",
+   "returned": 0,
+   "events": 0
+  },
+  "dustHaze": {
+   "title": "Dust and Haze",
+   "returned": 0,
+   "events": 0
+  },
+  "earthquakes": {
+   "title": "Earthquakes",
+   "returned": 0,
+   "events": 0
+  },
+  "floods": {
+   "title": "Floods",
+   "returned": 45,
+   "events": 45
+  },
+  "landslides": {
+   "title": "Landslides",
+   "returned": 0,
+   "events": 0
+  },
+  "manmade": {
+   "title": "Manmade",
+   "returned": 0,
+   "events": 0
+  },
+  "seaLakeIce": {
+   "title": "Sea and Lake Ice",
+   "returned": 10,
+   "events": 10
+  },
+  "severeStorms": {
+   "title": "Severe Storms",
+   "returned": 17,
+   "events": 17
+  },
+  "snow": {
+   "title": "Snow",
+   "returned": 0,
+   "events": 0
+  },
+  "tempExtremes": {
+   "title": "Temperature Extremes",
+   "returned": 0,
+   "events": 0
+  },
+  "volcanoes": {
+   "title": "Volcanoes",
+   "returned": 0,
+   "events": 0
+  },
+  "waterColor": {
+   "title": "Water Color",
+   "returned": 0,
+   "events": 0
+  },
+  "wildfires": {
+   "title": "Wildfires",
+   "returned": 651,
+   "events": 651
+  }
+ },
+ "failed": [],
+ "requests": 13,
+ "window_splits": 0,
+ "from_saved_responses": false
+}
