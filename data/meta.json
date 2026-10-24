@@ -3,11 +3,11 @@
  "source_url": "https://eonet.gsfc.nasa.gov/",
  "api_docs": "https://eonet.gsfc.nasa.gov/docs/v3",
  "endpoint": "https://eonet.gsfc.nasa.gov/api/v3/categories/<category>?status=all&days=30&limit=1000",
- "snapshot": "2026-10-24T05:18:11Z",
+ "snapshot": "2026-10-24T15:57:45Z",
  "window_days": 30,
- "window_start": "2026-09-24T05:18:11Z",
- "events": 723,
- "observations": 1617,
+ "window_start": "2026-09-24T15:57:45Z",
+ "events": 767,
+ "observations": 1667,
  "categories": {
   "drought": {
    "title": "Drought",
@@ -71,8 +71,8 @@
   },
   "wildfires": {
    "title": "Wildfires",
-   "returned": 651,
-   "events": 651
+   "returned": 697,
+   "events": 695
   }
  },
  "failed": [],
