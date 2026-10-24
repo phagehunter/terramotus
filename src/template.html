@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Terra Motus · Natural events on Earth in the last 30 days</title>
+<meta name="description" content="{{N_EVENTS}} natural events observed on Earth in the 30 days to {{SNAPSHOT_DAY}}, from NASA's Earth Observatory Natural Event Tracker (EONET): wildfires, severe storms, floods, volcanoes, sea and lake ice and more, each linked to the agency that reported it. Refreshed every six hours.">
+<meta name="author" content="Curtis Hoffmann">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#000b18">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://curtishoffmann.com/terramotus/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Curtis Hoffmann">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Terra Motus · Natural events on Earth in the last 30 days">
+<meta property="og:description" content="{{N_EVENTS}} natural events observed on Earth in the 30 days to {{SNAPSHOT_DAY}}, from NASA EONET: wildfires, severe storms, floods, volcanoes, sea ice and more. Refreshed every six hours.">
+<meta property="og:url" content="https://curtishoffmann.com/terramotus/">
+<meta property="og:image" content="https://curtishoffmann.com/terramotus/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Terra Motus: natural events on Earth from NASA EONET">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Terra Motus · Natural events on Earth in the last 30 days">
+<meta name="twitter:description" content="{{N_EVENTS}} natural events observed on Earth in the 30 days to {{SNAPSHOT_DAY}}, from NASA EONET. Refreshed every six hours.">
+<meta name="twitter:image" content="https://curtishoffmann.com/terramotus/assets/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&amp;family=Crimson+Pro:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css?v={{ASSET_VERSION}}">
+<script type="application/ld+json">
+{{JSON_LD}}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav" id="nav" aria-label="Page sections">
+  <div class="nav-inner">
+    <a class="nav-title" href="https://curtishoffmann.com/terramotus/">
+      <svg class="mark" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="22" cy="27" r="14"/><path d="M8 27h28"/><path d="M22 13c-4.5 4-6.5 8.5-6.5 14s2 10 6.5 14M22 13c4.5 4 6.5 8.5 6.5 14s-2 10-6.5 14"/><path d="M37 6.5a5.5 5.5 0 0 0-5.5 5.5c0 4 5.5 10 5.5 10s5.5-6 5.5-10A5.5 5.5 0 0 0 37 6.5z" fill="#000b18"/><circle cx="37" cy="12" r="1.8"/></svg>
+      <span>Terra Motus</span>
+    </a>
+    <div class="nav-links" id="nav-links">
+      <a class="nav-link" href="#events">Events</a>
+      <a class="nav-link" href="#about">About</a>
+      <a class="nav-link" href="#data">Data</a>
+    </div>
+    <a class="nav-home" href="https://curtishoffmann.com/" title="Curtis Hoffmann, home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8v9a2 2 0 0 1-2 2h-4v-7H9v7H5a2 2 0 0 1-2-2v-9z"/></svg>
+      <span class="lbl">Home</span>
+    </a>
+  </div>
+</nav>
+
+<main id="main">
+<header class="hero wrap">
+  <p class="eyebrow">NASA EONET v3 · snapshot {{SNAPSHOT}}</p>
+  <h1>Terra Motus</h1>
+  <p class="lead">Natural events on Earth observed in the last {{WINDOW_DAYS}} days, as NASA's <strong>Earth Observatory Natural Event Tracker</strong> records them: wildfires, severe storms, floods, volcanoes, sea and lake ice and more. Each row is one event, placed at its most recent observation and linked to the agency that reported it.</p>
+  <div class="stats" role="list">
+    <div class="stat" role="listitem"><div class="num">{{N_EVENTS}}</div><div class="lbl">events since {{WINDOW_START}}</div></div>
+    <div class="stat" role="listitem"><div class="num">{{N_OBS}}</div><div class="lbl">observations</div></div>
+    <div class="stat" role="listitem"><div class="num">{{N_CATS_ACTIVE}}<span class="of">/{{N_CATS}}</span></div><div class="lbl">categories with events</div></div>
+    <div class="stat" role="listitem"><div class="num small">{{TOP_CAT}}</div><div class="lbl">most active · {{TOP_CAT_N}} events</div></div>
+  </div>
+</header>
+
+<section id="events" class="block wrap">
+  <div class="section-label"><span class="num">01</span><span>The last {{WINDOW_DAYS}} days</span><span class="rule"></span></div>
+  <h2>{{N_EVENTS}} events, <em>newest first</em>.</h2>
+  <p class="deck">Search by name or category, narrow to one category, and sort by any column. Event names open the source agency's report in a new tab. Filters are kept in the address bar, so a view can be shared.</p>
+  {{ERRORS}}
+  <div class="filters">
+    <div class="f-q"><label for="f-q">Search events</label><input id="f-q" type="search" placeholder="Typhoon, Portugal, GDACS…" autocomplete="off"></div>
+    <div class="f-cats" role="group" aria-label="Filter by category">
+        {{CAT_BUTTONS}}
+    </div>
+    <div class="f-actions"><button class="btn small" type="button" id="f-reset">Reset</button></div>
+  </div>
+  <p class="status" id="status" aria-live="polite">{{N_EVENTS}} events in the last {{WINDOW_DAYS}} days, snapshot {{SNAPSHOT}}.</p>
+  <noscript><p class="note">Search, filters and sorting need JavaScript. The full table is below, newest first.</p></noscript>
+  <div class="table-wrap">
+    <table class="events" id="events-table">
+      <caption class="sr-only">Natural events observed in the last {{WINDOW_DAYS}} days, from NASA EONET, newest first</caption>
+      <thead>
+        <tr>
+          <th scope="col" data-k="d" aria-sort="descending"><button type="button">Observed</button></th>
+          <th scope="col" data-k="c"><button type="button">Category</button></th>
+          <th scope="col" data-k="t"><button type="button">Event</button></th>
+          <th scope="col" data-k="m" class="num"><button type="button">Size</button></th>
+          <th scope="col" data-k="n" class="num"><button type="button">Observations</button></th>
+          <th scope="col" class="num">Position</th>
+        </tr>
+      </thead>
+      <tbody id="rows">
+{{ROWS}}
+      </tbody>
+    </table>
+    <p class="empty" id="empty" hidden>No events match. Clear the search or choose another category.</p>
+  </div>
+  <p class="foot">Size is the magnitude EONET records with the latest observation: burned area for wildfires (hectares or acres), wind speed in knots for storms, area in square nautical miles for ice. Positions marked ≈ are the center of a reported polygon rather than a point.</p>
+</section>
+
+<section id="about" class="block wrap">
+  <div class="section-label"><span class="num">02</span><span>How this page is made</span><span class="rule"></span></div>
+  <h2>A snapshot every <em>six hours</em>.</h2>
+  <div class="prose">
+    <p>EONET is a service of NASA's Earth Science Data Systems program. It curates natural events from NASA and partner agencies, among them the Global Disaster Alert and Coordination System (GDACS) for floods and wildfires, the Joint Typhoon Warning Center and the National Hurricane Center for storms, InciWeb for fires in the United States, the U.S. National Ice Center for sea ice, and the Smithsonian's Global Volcanism Program for volcanoes. Each event carries one or more dated observations with a position; this page keeps the most recent one.</p>
+    <p>A scheduled job in this site's repository asks EONET for each of its {{N_CATS}} categories four times a day and keeps every event whose latest observation falls inside the last {{WINDOW_DAYS}} days. When a request comes back at EONET's response limit, the window is split in half and asked again, so the count is not capped. The result is saved to the repository and this page is rebuilt from it; the snapshot time above is when the data last changed. {{REQUESTS}} requests were made for the current snapshot, and no key or account is involved.</p>
+    <p>Three things to know when reading the table. Many categories are quiet for weeks at a time, so a zero is EONET having nothing to report rather than a missing download. Floods arrive as polygons, and a few of them with latitude and longitude in the wrong order; the page swaps a pair back when it is impossible as given, and otherwise shows the position as EONET supplies it, so the source report is the place to confirm a location. Closed events stay in the table until their last observation leaves the window.</p>
+    <h3>Categories in this snapshot</h3>
+    <ul class="cats">
+        {{CAT_LIST}}
+    </ul>
+  </div>
+</section>
+
+<section id="data" class="block wrap">
+  <div class="section-label"><span class="num">03</span><span>Data and credit</span><span class="rule"></span></div>
+  <h2>Take the <em>data</em>.</h2>
+  <div class="prose">
+    <p>The current snapshot is published as <a href="data/events.json">data/events.json</a> ({{DATA_KB}} KB, one compact record per event) with its provenance in <a href="data/meta.json">data/meta.json</a>: snapshot time, window, per-category counts, any failed request and the endpoint used. The field names are explained at the top of <a href="https://github.com/phagehunter/terramotus/blob/main/fetch_data.py">fetch_data.py</a>, and the page's rows are rendered from the same file by <a href="https://github.com/phagehunter/terramotus/blob/main/build.py">build.py</a>.</p>
+    <p>Events, dates, positions and magnitudes are NASA EONET's, redistributed here unchanged apart from selection and rounding. Please credit <a href="https://eonet.gsfc.nasa.gov/">NASA EONET</a> and the source agency named in each record when reusing them. The code is MIT-licensed; <a href="https://github.com/phagehunter/terramotus">source on GitHub</a>.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <div><em>Terra Motus</em> is made by <a href="https://curtishoffmann.com/">Curtis Hoffmann</a>. Data: <a href="https://eonet.gsfc.nasa.gov/">NASA EONET v3</a>. Code MIT-licensed. <a href="https://github.com/phagehunter/terramotus">Source on GitHub</a>.</div>
+    <div>Snapshot {{SNAPSHOT}} · {{N_EVENTS}} events · refreshed every six hours</div>
+  </div>
+</footer>
+
+<script src="assets/app.js?v={{ASSET_VERSION}}"></script>
+</body>
+</html>

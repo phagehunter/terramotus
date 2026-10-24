@@ -1,20 +1,24 @@
 # Terra Motus
 
-> A single-page live ledger by Curtis Hoffmann of natural events on Earth over the past 30 days, drawn from NASA's Earth Observatory Natural Event Tracker (EONET) v3. The page queries EONET in the browser on every visit; nothing is stored.
+> A table by Curtis Hoffmann of natural events on Earth observed in the last 30 days, from NASA's Earth Observatory Natural Event Tracker (EONET) v3. A scheduled job snapshots EONET every six hours into the repository; the page is rebuilt from that snapshot and fetches nothing at run time.
 
 Site: https://curtishoffmann.com/terramotus/
 Source: https://github.com/phagehunter/terramotus
 
 ## What it shows
 
-- One row per event: date of the latest observation, category, event name, and coordinates. Newest first. Click a row to open the event's source report; the search box filters by name or category.
-- Thirteen EONET categories: drought, dust and haze, earthquakes, floods, landslides, manmade, sea and lake ice, severe storms, snow, temperature extremes, volcanoes, water color, wildfires.
-- Events are kept when their most recent geometry date falls within the past 30 days (up to 50 per category are requested).
+- One row per event: date of the most recent observation, category, event name linked to the source agency's report, size (burned area, wind speed or ice area where EONET gives one), number of observations, and the position of the most recent observation (polygon centroids marked ≈). Newest first.
+- Thirteen EONET categories: drought, dust and haze, earthquakes, floods, landslides, manmade, sea and lake ice, severe storms, snow, temperature extremes, volcanoes, water color, wildfires. Many are quiet for weeks at a time.
+- Search, one filter button per category, sortable columns; the view is kept in the URL hash (#cat=wildfires&q=portugal&sort=m:desc).
+- The status line "N events in the last 30 days, snapshot <time> UTC" is computed from the data.
 
 ## Data
 
-- NASA EONET v3, https://eonet.gsfc.nasa.gov/ (API: https://eonet.gsfc.nasa.gov/api/v3/categories/<category>?status=all&limit=50). EONET curates event metadata from NASA and partner sources; dates, titles and positions are theirs.
-- The page is plain HTML, CSS and JavaScript with no dependencies beyond two Google Fonts.
+- NASA EONET v3, https://eonet.gsfc.nasa.gov/ (API docs https://eonet.gsfc.nasa.gov/docs/v3). One request per category: https://eonet.gsfc.nasa.gov/api/v3/categories/<category>?status=all&days=30&limit=1000, with the window split by start/end dates when a response hits the limit. No key, no rate limit published; about 52 requests a day.
+- Snapshot: https://curtishoffmann.com/terramotus/data/events.json (one compact record per event; field names at the top of fetch_data.py) and https://curtishoffmann.com/terramotus/data/meta.json (snapshot time, window, per-category counts, failed requests, endpoint).
+- Refresh: .github/workflows/refresh.yml runs every six hours and commits only when the events changed.
+- Known upstream quirk: some GDACS flood polygons arrive with latitude and longitude swapped; impossible pairs are swapped back, others are shown as supplied.
+- Code MIT-licensed; the data is NASA EONET's, credit NASA EONET and the source agency named in each record.
 
 ## Contact
 

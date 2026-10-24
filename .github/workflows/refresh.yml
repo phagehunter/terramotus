@@ -1,0 +1,43 @@
+name: refresh
+
+# Takes a fresh snapshot of NASA EONET every six hours and commits it only when
+# the events changed. EONET needs no key; the run makes thirteen requests (one
+# per category) and nothing else. Trigger it by hand from the Actions tab with
+# "Run workflow". GitHub pauses scheduled workflows after 60 days without a
+# push by a person; re-enable it from the Actions tab if that happens.
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"   # 00:17, 06:17, 12:17, 18:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch the last 30 days from EONET
+        run: python3 fetch_data.py
+      - name: Rebuild the page and commit when the events changed
+        run: |
+          if git diff --quiet -- data/events.json; then
+            echo "events unchanged; keeping the previous snapshot"
+            git checkout -- data
+            exit 0
+          fi
+          python3 build.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/events.json data/meta.json index.html sitemap.xml
+          git commit -m "Refresh EONET snapshot $(python3 -c 'import json;print(json.load(open("data/meta.json"))["snapshot"])')"
+          git push
