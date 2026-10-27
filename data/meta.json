@@ -3,11 +3,11 @@
  "source_url": "https://eonet.gsfc.nasa.gov/",
  "api_docs": "https://eonet.gsfc.nasa.gov/docs/v3",
  "endpoint": "https://eonet.gsfc.nasa.gov/api/v3/categories/<category>?status=all&days=30&limit=1000",
- "snapshot": "2026-10-27T05:05:14Z",
+ "snapshot": "2026-10-27T12:11:57Z",
  "window_days": 30,
- "window_start": "2026-09-27T05:05:14Z",
+ "window_start": "2026-09-27T12:11:57Z",
  "events": 751,
- "observations": 1683,
+ "observations": 1687,
  "categories": {
   "drought": {
    "title": "Drought",
