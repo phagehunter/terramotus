@@ -3,11 +3,11 @@
  "source_url": "https://eonet.gsfc.nasa.gov/",
  "api_docs": "https://eonet.gsfc.nasa.gov/docs/v3",
  "endpoint": "https://eonet.gsfc.nasa.gov/api/v3/categories/<category>?status=all&days=30&limit=1000",
- "snapshot": "2026-10-29T22:45:31Z",
+ "snapshot": "2026-10-30T05:49:45Z",
  "window_days": 30,
- "window_start": "2026-09-29T22:45:31Z",
- "events": 779,
- "observations": 1674,
+ "window_start": "2026-09-30T05:49:45Z",
+ "events": 778,
+ "observations": 1639,
  "categories": {
   "drought": {
    "title": "Drought",
@@ -26,7 +26,7 @@
   },
   "floods": {
    "title": "Floods",
-   "returned": 47,
+   "returned": 46,
    "events": 46
   },
   "landslides": {
@@ -46,8 +46,8 @@
   },
   "severeStorms": {
    "title": "Severe Storms",
-   "returned": 18,
-   "events": 17
+   "returned": 16,
+   "events": 16
   },
   "snow": {
    "title": "Snow",
@@ -71,7 +71,7 @@
   },
   "wildfires": {
    "title": "Wildfires",
-   "returned": 719,
+   "returned": 706,
    "events": 706
   }
  },
