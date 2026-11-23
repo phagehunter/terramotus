@@ -62,6 +62,16 @@ def size(r):
     return f"{txt} {UNIT.get(r.get('mu'), r.get('mu', ''))}".strip()
 
 
+def title_cell(r):
+    # fetch_data.py keeps only http:// and https:// links and leaves "s" empty otherwise. The
+    # scheme is checked again here, where the value meets href, so that a snapshot written by
+    # an older fetch_data.py or edited by hand cannot put any other kind of address on the page.
+    url = r.get("s") or ""
+    if url.lower().startswith(("http://", "https://")):
+        return f'<a href="{esc(url)}" target="_blank" rel="noopener">{esc(r["t"])}</a>'
+    return esc(r["t"])
+
+
 def rows_html():
     # Rows carry no data attributes or classes: the client script reads category, size and
     # observation count from the cell text, and the initial order (newest first) is the date sort.
@@ -72,7 +82,7 @@ def rows_html():
         out.append(
             f'<tr><td>{esc(day(d))}</td>'
             f'<td>{esc(META["categories"][r["c"]]["title"])}</td>'
-            f'<td><a href="{esc(r["s"])}" target="_blank" rel="noopener">{esc(r["t"])}</a></td>'
+            f'<td>{title_cell(r)}</td>'
             f'<td>{esc(size(r))}</td>'
             f'<td{title_attr}>{r["n"]}</td>'
             f'<td>{esc(coords(r))}</td></tr>'

@@ -34,9 +34,18 @@ Short keys in events.json
   la, lo  latitude and longitude of the most recent observation; for a
           Polygon this is the centroid of the outer ring (flag g = "Polygon")
   m, mu   magnitude value and unit of the most recent observation, when EONET gives one
-  s   source URL (the first source EONET lists), else the EONET API link
+  s   source URL (the first source EONET lists), else the EONET API link; kept
+      only when it is an http:// or https:// address, otherwise an empty string
   si  source id (for example "InciWeb", "SIVolcano", "GDACS")
   x   date the event was closed, when EONET has closed it
+
+Nobody reviews a snapshot before it is published, so three guards keep a
+malformed or tampered response from reaching the page as it came: a link is
+kept only when it is an http:// or https:// address (anything else, such as
+javascript: or data:, is dropped and the title is shown as plain text); a title
+longer than MAX_TITLE characters is cut; and at most MAX_EVENTS events are
+kept, newest first. What the guards did is recorded in meta.json under
+"guards" and printed in the run log.
 """
 import datetime
 import json
@@ -63,6 +72,12 @@ PAUSE = 1.0            # seconds between requests
 TIMEOUT = 60           # seconds per request
 RETRIES = 2            # extra attempts on a network or 5xx error
 USER_AGENT = "terramotus/2.0 (+https://github.com/phagehunter/terramotus)"
+# Guards against a malformed or tampered response. For scale, the snapshots up to November 2026
+# held between 723 and 934 events; on 22 November the longest title was 73 characters and the
+# longest link 87.
+MAX_TITLE = 200        # characters; a longer title is cut
+MAX_URL = 2000         # characters; a longer link is dropped
+MAX_EVENTS = 5000      # events kept, newest first
 
 
 def log(*a):
@@ -143,7 +158,43 @@ def point_of(geometry):
     return None, None
 
 
-def compact(event, since):
+def safe_url(*candidates):
+    """The first candidate that is a plain http:// or https:// address, else an empty string.
+
+    build.py writes this value into href="…". HTML escaping there stops markup, but it does
+    not stop a javascript: or data: address, so the scheme is checked here by its literal
+    prefix. Addresses with spaces or control characters, which browsers quietly strip before
+    reading the scheme, are refused along with the rest.
+    """
+    for u in candidates:
+        if not isinstance(u, str):
+            continue
+        u = u.strip()
+        if not u.lower().startswith(("http://", "https://")) or len(u) > MAX_URL:
+            continue
+        if any(ch.isspace() or ord(ch) < 32 or ord(ch) == 127 for ch in u):
+            continue
+        try:
+            if not urllib.parse.urlsplit(u).netloc:
+                continue
+        except ValueError:
+            continue
+        return u
+    return ""
+
+
+def clip_title(title):
+    """The title as text, cut to MAX_TITLE characters with an ellipsis when it is longer."""
+    t = title.strip() if isinstance(title, str) else ""
+    return t if len(t) <= MAX_TITLE else t[:MAX_TITLE - 1].rstrip() + "…"
+
+
+def compact(event, since, flagged=None):
+    """One compact record, or None when the event has no dated observation inside the window.
+
+    flagged, when given, collects the ids of events whose link was rejected ("links") or
+    whose title was cut ("titles").
+    """
     geoms = [g for g in event.get("geometry") or [] if g.get("date")]
     if not geoms:
         return None
@@ -158,7 +209,7 @@ def compact(event, since):
     src = (event.get("sources") or [{}])[0]
     rec = {
         "id": event["id"],
-        "t": (event.get("title") or "").strip(),
+        "t": clip_title(event.get("title")),
         "c": cat_id,
         "d": latest_dt.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "n": len(geoms),
@@ -175,7 +226,13 @@ def compact(event, since):
         rec["m"] = latest["magnitudeValue"]
         if latest.get("magnitudeUnit"):
             rec["mu"] = latest["magnitudeUnit"]
-    rec["s"] = src.get("url") or event.get("link") or ""
+    rec["s"] = safe_url(src.get("url"), event.get("link"))
+    if flagged is not None:
+        given = src.get("url") or event.get("link") or ""
+        if rec["s"] != (given.strip() if isinstance(given, str) else given):
+            flagged["links"].add(rec["id"])
+        if isinstance(event.get("title"), str) and rec["t"] != event["title"].strip():
+            flagged["titles"].add(rec["id"])
     if src.get("id"):
         rec["si"] = src["id"]
     if event.get("closed"):
@@ -219,16 +276,20 @@ def main(argv):
             raw[cat] = []
 
     titles = {c: v["title"] for c, v in per_cat.items()}
+    flagged = {"links": set(), "titles": set()}
     seen = {}
     for cat in CATEGORIES:
         for ev in raw[cat]:
-            rec = compact(ev, since)
+            rec = compact(ev, since, flagged)
             if rec is None:
                 continue
             prev = seen.get(rec["id"])
             if prev is None or rec["d"] > prev["d"]:
                 seen[rec["id"]] = rec
     events = sorted(seen.values(), key=lambda r: (r["d"], r["t"]), reverse=True)
+    guards = {"links_rejected": len(flagged["links"]), "titles_cut": len(flagged["titles"]),
+              "events_dropped": max(0, len(events) - MAX_EVENTS)}
+    events = events[:MAX_EVENTS]
     for cat in CATEGORIES:
         per_cat[cat]["events"] = sum(1 for r in events if r["c"] == cat)
 
@@ -247,12 +308,16 @@ def main(argv):
         "requests": stats["requests"],
         "window_splits": stats["splits"],
         "from_saved_responses": bool(from_dir),
+        "guards": guards,
     }
     OUT.mkdir(exist_ok=True)
     (OUT / "events.json").write_text(json.dumps(events, separators=(",", ":"), ensure_ascii=False) + "\n", encoding="utf-8")
     (OUT / "meta.json").write_text(json.dumps(meta, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     log(f"wrote data/events.json ({len(events)} events, {meta['observations']} observations) and data/meta.json; "
         f"{stats['requests']} requests, {stats['splits']} window splits, failed: {meta['failed'] or 'none'}")
+    if any(guards.values()):
+        log(f"guards: {guards['links_rejected']} links rejected (not http or https), {guards['titles_cut']} titles cut "
+            f"to {MAX_TITLE} characters, {guards['events_dropped']} events dropped over the cap of {MAX_EVENTS}")
     if len(meta["failed"]) == len(CATEGORIES):
         raise SystemExit("every category failed; leaving the previous snapshot in place is up to the caller")
 

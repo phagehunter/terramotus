@@ -36,6 +36,8 @@ Two quirks of the upstream data are handled and worth knowing:
 
 If one category's request fails, the others are still saved and the page shows a notice naming the failed category; the next run tries again. If every request fails, the script exits with an error and nothing is written.
 
+Nobody reviews a snapshot before it goes live, so `fetch_data.py` also guards against a malformed or tampered response. A source link is kept only when it is an `http://` or `https://` address; any other kind (`javascript:`, `data:` and so on) is dropped, the EONET link is tried in its place, and failing that the event name is shown as plain text. `build.py` checks the scheme again where it writes the link. A title longer than 200 characters is cut, and at most 5,000 events are kept, newest first (the snapshots up to November 2026 held between 723 and 934). `data/meta.json` records what the guards did under `guards`, and the run log prints a line when any of them acted.
+
 ## How the snapshot updates
 
 `.github/workflows/refresh.yml` runs at 00:17, 06:17, 12:17 and 18:17 UTC and on demand ("Run workflow" in the Actions tab). It runs `fetch_data.py`, and if `data/events.json` is unchanged it stops without committing; otherwise it runs `build.py` and commits `data/`, `index.html` and `sitemap.xml` as `github-actions[bot]`. GitHub Pages then redeploys. The snapshot time shown on the page is therefore the time the data last changed.
