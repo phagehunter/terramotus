@@ -26,7 +26,8 @@
     const m = parseFloat(r.cells[3].textContent.replace(/,/g, ''));
     r._m = isNaN(m) ? -1 : m;
     r._t = r.cells[2].textContent.trim();
-    r._k = (r._t + ' ' + r.cells[1].textContent + ' ' + r.cells[2].querySelector('a').href).toLowerCase();
+    const a = r.cells[2].querySelector('a'); // absent when the build dropped an unsafe source link
+    r._k = (r._t + ' ' + r.cells[1].textContent + ' ' + (a ? a.href : '')).toLowerCase();
   });
 
   const DEFAULT_SORT = 'd:desc';
